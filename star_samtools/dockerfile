@@ -1,0 +1,45 @@
+FROM debian:stable-slim
+
+MAINTAINER nipper@wisc.edu
+
+ARG STAR_VERSION=2.7.11b
+
+ARG SAMTOOLSVER=1.20
+
+ENV PACKAGES gcc g++ make wget zlib1g-dev unzip vim-common libncurses5-dev libbz2-dev liblzma-dev libcurl4-gnutls-dev libssl-dev perl bzip2 gnuplot ca-certificates gawk
+
+# Install dependencies 
+RUN apt-get update && \
+    apt-get install -y ${PACKAGES} && \
+	apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+#STAR
+RUN wget https://github.com/alexdobin/STAR/archive/${STAR_VERSION}.zip && \
+    unzip ${STAR_VERSION}.zip && \
+    cd STAR-${STAR_VERSION}/source && \
+    make STARstatic && \
+    mv STAR /usr/local/bin && \
+    cd /tmp && \
+    rm -rf STAR-${STAR_VERSION} ${STAR_VERSION}.zip
+
+# install samtools
+RUN wget https://github.com/samtools/samtools/releases/download/${SAMTOOLSVER}/samtools-${SAMTOOLSVER}.tar.bz2 && \
+	tar -xjf samtools-${SAMTOOLSVER}.tar.bz2 && \
+	rm samtools-${SAMTOOLSVER}.tar.bz2 && \
+	cd samtools-${SAMTOOLSVER} && \
+	./configure && \
+	make && \
+	make install && \
+	cd .. && \
+    rm -rf samtools-${SAMTOOLS_VERSION} samtools-${SAMTOOLS_VERSION}.tar.bz2
+
+# Set PATH environment variable explicitly
+ENV PATH="/usr/local/bin:/usr/bin:/bin:${PATH}"
+
+# set perl locale settings
+ENV LC_ALL=C
+
+# Set working directory
+WORKDIR /data
+

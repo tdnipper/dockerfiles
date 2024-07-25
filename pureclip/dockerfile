@@ -1,0 +1,26 @@
+FROM debian:stable-slim
+
+ENV pureclip_version=1.3.1
+
+# run update and install necessary tools
+RUN apt-get update -y && apt-get install -y \
+    build-essential \
+    libnss-sss \
+    curl \
+    vim \
+    less \
+    wget \
+    unzip \
+    zlib1g-dev
+	
+WORKDIR /usr/local/bin/
+RUN wget https://github.com/skrakau/PureCLIP/releases/download/v${pureclip_version}/PureCLIP-${pureclip_version}-linux64-static.tar.gz && \
+	tar -xzf PureCLIP-${pureclip_version}-linux64-static.tar.gz && \ 
+	cd /usr/local/bin/PureCLIP-$pureclip_version-linux64-static && \
+	cp pureclip /usr/local/bin && \
+	cd .. && \
+	rm -rf PureCLIP-${pureclip_version}-linux64-static.tar.gz && \
+	rm -rf PureCLIP-${pureclip_version}-linux-static
+	
+# set default command
+CMD ["pureclip"]

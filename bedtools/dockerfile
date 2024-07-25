@@ -1,0 +1,28 @@
+FROM debian:stable-slim
+
+# run update and install necessary tools
+RUN apt-get update -y && apt-get install -y \
+    build-essential \
+    libnss-sss \
+    curl \
+    vim \
+    less \
+    wget \
+    unzip \
+    zlib1g-dev \
+	rsync
+	
+WORKDIR /usr/local/bin
+	
+RUN wget https://github.com/arq5x/bedtools2/releases/download/v2.31.0/bedtools.static && \
+	mv bedtools.static bedtools && \
+	chmod a+x bedtools
+	
+RUN rsync -aP rsync://hgdownload.soe.ucsc.edu/genome/admin/exe/linux.x86_64/ ./
+
+	
+# Ensure /usr/local/bin is in the PATH
+ENV PATH="/usr/local/bin:${PATH}"
+
+CMD ["bedtools", "--version"]
+	
