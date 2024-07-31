@@ -10,6 +10,8 @@ RUN conda config --add channels conda-forge && \
     
 RUN conda create -n qualimap qualimap -y
 
+ENV PATH="/opt/conda/envs/qualimap/bin:${PATH}"
+
 SHELL [ "conda", "run", "-n", "qualimap" ]
 
 CMD ["qualimap", "-h"]
