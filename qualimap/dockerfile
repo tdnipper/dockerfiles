@@ -6,8 +6,9 @@ RUN apt-get update && \
 
 RUN conda config --add channels conda-forge && \
     conda config --add channels bioconda && \
-    conda update --all -y && \
-    conda create -n qualimap qualimap -y
+    conda update --all -y
+    
+RUN conda create -n qualimap qualimap -y
 
 SHELL [ "conda", "run", "-n", "qualimap" ]
 
