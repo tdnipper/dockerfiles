@@ -1,5 +1,5 @@
 # Use the Miniconda3 base image
-FROM continuumio/miniconda3
+FROM continuumio/miniconda3:24.5.0-0
 
 # Update and install necessary system packages and tools
 RUN apt-get update -y && apt-get install -y \
