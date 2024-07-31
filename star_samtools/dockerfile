@@ -1,7 +1,5 @@
 FROM debian:stable-slim
 
-MAINTAINER nipper@wisc.edu
-
 ARG STAR_VERSION=2.7.11b
 
 ARG SAMTOOLSVER=1.20
