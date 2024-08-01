@@ -1,0 +1,17 @@
+FROM continuumio/miniconda3:24.5.0-0
+
+RUN apt-get update && \
+    apt-get upgrade -y && \
+    apt-get clean
+
+RUN conda config --add channels conda-forge && \
+    conda config --add channels bioconda && \
+    conda update --all -y
+
+RUN conda create -n salmon salmon -y
+
+ENV PATH="/opt/conda/envs/salmon/bin:${PATH}"
+
+SHELL ["conda", "run", "-n", "salmon"]
+
+CMD ["salmon", "-h"]
