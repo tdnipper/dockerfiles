@@ -1,5 +1,5 @@
 # Use the Miniconda3 base image
-FROM continuumio/miniconda3
+FROM continuumio/miniconda3:24.5.0-0
 
 # Update and install necessary system packages and tools
 RUN apt-get update -y && apt-get install -y \
@@ -11,17 +11,15 @@ RUN apt-get update -y && apt-get install -y \
     wget \
     unzip \
     zlib1g-dev \
-    pigz && \
-    # Install bedtools
-    wget https://github.com/arq5x/bedtools2/releases/download/v2.31.0/bedtools.static && \
-    mv bedtools.static /usr/local/bin/bedtools && \
-    chmod a+x /usr/local/bin/bedtools && \
+    pigz && \ 
     # Clean up apt cache
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 	
-# Ensure /usr/local/bin is in the PATH
-ENV PATH="/usr/local/bin:${PATH}"
+# Install bedtools
+RUN wget https://github.com/arq5x/bedtools2/releases/download/v2.31.0/bedtools.static && \
+    mv bedtools.static /usr/local/bin/bedtools && \
+    chmod a+x /usr/local/bin/bedtools 
 
 # Add conda-forge and bioconda channels, and create the 'paraclu' environment
 RUN conda config --add channels conda-forge && \
@@ -32,5 +30,6 @@ RUN conda config --add channels conda-forge && \
 RUN echo "conda activate paraclu" >> ~/.bashrc
 
 # Activate the environment and run the default command
-ENTRYPOINT ["conda", "run", "-n", "paraclu"]
+ENTRYPOINT ["conda", "run", "--no-capture-output", "-n", "paraclu"]
 
+CMD ["paraclu", "-h"]
