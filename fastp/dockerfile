@@ -1,5 +1,7 @@
 FROM debian:stable-slim
 
+COPY ./dockerfile /
+
 # set the environment variables
 ENV fastp_version 0.23.4
 
@@ -7,14 +9,13 @@ ENV fastp_version 0.23.4
 RUN apt-get update -y && apt-get install -y \
     build-essential \
     libnss-sss \
-    curl \
     vim \
     less \
     wget \
     unzip \
     zlib1g-dev \
     libdeflate-dev \
-	libisal-dev
+    libisal-dev
 
 # install fastqc
 WORKDIR /usr/local/bin/
@@ -25,7 +26,6 @@ RUN wget https://github.com/OpenGene/fastp/archive/v${fastp_version}.zip && \
 	make install && \
 	cd .. && \
 	rm -rf v${fastp_version} v${fastp_version}.zip
-WORKDIR /usr/local/bin
 
 # set default command
 CMD ["fastp"]

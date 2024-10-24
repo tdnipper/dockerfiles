@@ -1,5 +1,6 @@
-
 FROM python:3.11.9-slim
+
+COPY ./dockerfile /
 
 RUN apt-get update && \
 	apt-get install -y \
@@ -11,7 +12,7 @@ RUN apt-get update && \
 	unzip \
 	gcc && \
     apt-get clean && \
-	pip install --upgrade pip
+    pip install --upgrade pip
 	
 RUN wget https://github.com/CGATOxford/UMI-tools/archive/refs/tags/1.1.5.zip && \
 	unzip 1.1.5.zip && \
@@ -23,8 +24,6 @@ ENV PATH="/usr/local/bin:${PATH}"
 
 # set perl locale settings
 ENV LC_ALL=C
-
-WORKDIR /usr/local/bin
 
 # Set default command	
 CMD ["umi_tools"]

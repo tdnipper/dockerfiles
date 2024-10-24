@@ -1,16 +1,17 @@
 FROM debian:stable-slim
 
+COPY ./dockerfile /
+
 # run update and install necessary tools
 RUN apt-get update -y && apt-get install -y \
     build-essential \
     libnss-sss \
-    curl \
     vim \
     less \
     wget \
     unzip \
     zlib1g-dev \
-	rsync
+    rsync
 	
 WORKDIR /usr/local/bin
 	
