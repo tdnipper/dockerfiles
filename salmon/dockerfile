@@ -14,6 +14,4 @@ RUN conda create -n salmon salmon -y
 
 ENV PATH="/opt/conda/envs/salmon/bin:${PATH}"
 
-SHELL ["conda", "run", "-n", "salmon"]
-
 CMD ["salmon", "-h"]
