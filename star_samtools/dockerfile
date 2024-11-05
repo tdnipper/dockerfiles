@@ -45,3 +45,4 @@ ENV LC_ALL=C
 # Set working directory
 WORKDIR /data
 
+CMD ["echo", "'Run STAR or samtools to view options'"]
